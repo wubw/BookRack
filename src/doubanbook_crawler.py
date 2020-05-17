@@ -118,9 +118,12 @@ if os.path.isfile(downloaded_filename):
     downloaded_books = downloaded_file.read().splitlines()
     downloaded_file.close()
 
-handlebookspage(
-    "https://book.douban.com/people/wubinwei/collect?start=", 0, 'have_read')
-handlebookspage(
-    "https://book.douban.com/people/wubinwei/do?start=", 0, 'reading')
-handlebookspage(
-    "https://book.douban.com/people/wubinwei/wish?start=", 0, 'will_read')
+# handlebookspage(
+#     "https://book.douban.com/people/wubinwei/collect?start=", 0, 'have_read')
+# handlebookspage(
+#     "https://book.douban.com/people/wubinwei/do?start=", 0, 'reading')
+# handlebookspage(
+#     "https://book.douban.com/people/wubinwei/wish?start=", 0, 'will_read')
+
+getbookitem('https://book.douban.com/subject/1025643/', 'have_read')
+getbookitem('https://book.douban.com/subject/1674929/', 'have_read')
