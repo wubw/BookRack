@@ -1,8 +1,47 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
   </head>
   <body>
-    Hello
+    Book Rack
+    <br />
+    <div class="arrange-horizontally">
+      <input
+        type="radio"
+        id="reading"
+        name="doubanbook_readingstatus"
+        value="reading"
+        checked
+      />
+      <label for="reading">Reading</label>
+      <input
+        type="radio"
+        id="have_read"
+        name="doubanbook_readingstatus"
+        value="have_read"
+      />
+      <label for="have_read">Have Read</label>
+      <input
+        type="radio"
+        id="will_read"
+        name="doubanbook_readingstatus"
+        value="will_read"
+      />
+      <label for="will_read">Will Read</label>
+    </div>
+    <div style="float: left; width: 80%;">
+      <table id="booklisttb" style="width: 100%;"></table>
+    </div>
+    <div style="float: left; width: 20%;">
+      hello
+    </div>
+    <br />
+
+    <script
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="main.js" type="text/javascript"></script>
   </body>
 </html>
