@@ -21,6 +21,40 @@ var port = process.env.PORT || 3001;
 var server = app.listen(port);
 console.log("Express app started on port " + port);
 
+function parse_info_data(info_data) {
+  let splits = info_data.split("||");
+  const searchkeywords = {
+    "作者:": "author",
+    "出版社:": "publisher",
+    "副标题:": "sub-title",
+    "出版年:": "publish-time",
+    "页数:": "pages",
+    "译者:": "translator",
+    "原作名:": "original-title",
+    "定价:": "",
+    "装帧:": "",
+    "丛书:": "",
+    "ISBN:": "",
+  };
+  let tempBuf = [];
+  let searchkey = "";
+  let results = {};
+  splits.forEach(function (elem) {
+    if (elem in searchkeywords) {
+      if (searchkey) {
+        results[searchkey] = tempBuf.join(" ");
+      }
+      tempBuf = [];
+      searchkey = searchkeywords[elem];
+      return;
+    }
+    if (searchkey) {
+      tempBuf.push(elem);
+    }
+  });
+  return results;
+}
+
 app.get("/books", function (req, res) {
   // Use connect method to connect to the Server
   // Create a new MongoClient
@@ -43,6 +77,7 @@ app.get("/books", function (req, res) {
         img: 1,
         timestamp: 1,
         douban_url: 1,
+        tags: 1,
       })
       .toArray(function (err, result) {
         if (err) throw err;
@@ -55,11 +90,10 @@ app.get("/books", function (req, res) {
             elem.my_rating = "";
           }
           if (elem.info) {
-            let splits = elem.info.split("||");
-            console.log(splits);
+            info_data = parse_info_data(elem.info);
+            Object.assign(elem, info_data);
           }
         });
-
         res.write(JSON.stringify(result));
         res.end();
         client.close();
