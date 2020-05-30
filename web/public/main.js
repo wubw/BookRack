@@ -61,7 +61,11 @@ function renderbooktable() {
     filteredbooklist.push(book);
     booklisttb.append(
       "<tr><td>" +
+        '<a href="http://localhost:3001/book.html?id=' +
+        book._id +
+        '" target="_blank">' +
         book.title +
+        "</a>" +
         "</td><td>" +
         book.author +
         "</td><td>" +

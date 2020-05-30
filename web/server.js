@@ -1,5 +1,6 @@
 var express = require("express");
 const MongoClient = require("mongodb").MongoClient;
+const ObjectID = require("mongodb").ObjectID;
 const assert = require("assert");
 
 // Connection URL
@@ -56,8 +57,6 @@ function parse_info_data(info_data) {
 }
 
 app.get("/books", function (req, res) {
-  // Use connect method to connect to the Server
-  // Create a new MongoClient
   const client = new MongoClient(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -98,5 +97,29 @@ app.get("/books", function (req, res) {
         res.end();
         client.close();
       });
+  });
+});
+
+app.get("/book", function (req, res) {
+  const client = new MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    db.collection("douban").findOne({ _id: ObjectID(req.query.id) }, function (
+      err,
+      result
+    ) {
+      if (err) throw err;
+      if (result.info) {
+        info_data = parse_info_data(result.info);
+        Object.assign(result, info_data);
+      }
+      res.write(JSON.stringify(result));
+      res.end();
+      client.close();
+    });
   });
 });

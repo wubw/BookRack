@@ -6,6 +6,9 @@
 .arrange-vertically > * {
   display: block;
 }
+i {
+  margin: 5px;
+}
 a {
   background: #ccc;
   cursor: pointer;
