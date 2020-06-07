@@ -11,6 +11,7 @@ $.get("http://localhost:3001/book", { id: book_id }, function (data) {
   $("#pages").text(book.pages);
   $("#translator").text(book.translator);
   $("#original-title").text(book["original-title"]);
+  $("#douban_url").text(book["douban_url"]).attr("href", book["douban_url"]);
   let tagsdiv = $("#tags");
   if (book.tags) {
     book.tags.split(" ").forEach(function (tag) {
