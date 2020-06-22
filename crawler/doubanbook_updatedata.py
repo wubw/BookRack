@@ -2,6 +2,7 @@ import doubanbook_utility
 import random
 import time
 import pymongo
+from bson.objectid import ObjectId
 import urllib.request
 import base64
 
@@ -37,9 +38,12 @@ def handlebookspage(booklist_url, start, reading_status):
             print(b)
             book_content = doubanbook_utility.getbookcontent(
                 b['douban_url'], reading_status)
-            img_data = urllib.request.urlopen(book_content['img']).read()
-            book_content['img_data'] = base64.encodebytes(
-                img_data).decode("utf-8")
+            print(book_content)
+            # img_data = urllib.request.urlopen(book_content['img']).read()
+            img_data = doubanbook_utility.getimgdata(book_content['img'])
+            if img_data != None:
+                book_content['img_data'] = base64.encodebytes(
+                    img_data).decode("utf-8")
             # print(book_content)
             mongo_col.insert_one(book_content)
         else:
@@ -56,16 +60,36 @@ def handlebookspage(booklist_url, start, reading_status):
 
     if finding_count > 0:
         handlebookspage(booklist_url, start + finding_count, reading_status)
+    else:
+        remove_book(reading_status)
+
+
+def remove_book(reading_status):
+    print('removing book.....')
+    for book in mongo_col.find():
+        if reading_status != book['reading_status']:
+            continue
+        removed = True
+        for b in doubanbooks:
+            if b['douban_url'] == book['douban_url']:
+                removed = False
+                break
+
+        if removed:
+            print('book is removed~~~~~: ' + book['douban_url'])
+            #mongo_col.delete_one({"_id": ObjectId(book["_id"])})
+    # print(doubanbooks)
 
 
 # handlebookspage(
-#     "https://book.douban.com/people/wubinwei/collect?start=", 0, 'have_read')
+#    "https://book.douban.com/people/wubinwei/collect?start=", 0, 'have_read')
 # handlebookspage(
 #    "https://book.douban.com/people/wubinwei/do?start=", 0, 'reading')
-# handlebookspage(
-#    "https://book.douban.com/people/wubinwei/wish?start=", 0, 'will_read')
+handlebookspage(
+    "https://book.douban.com/people/wubinwei/wish?start=", 0, 'will_read')
 
 # print(doubanbooks)
+
 
 def process_info_property(book):
     info = book['info']

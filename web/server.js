@@ -123,3 +123,43 @@ app.get("/book", function (req, res) {
     });
   });
 });
+
+app.get("/localbooks", function (req, res) {
+  const client = new MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    db.collection("match")
+      .find({})
+      .toArray(function (err, result) {
+        if (err) throw err;
+        res.write(JSON.stringify(result));
+        res.end();
+        client.close();
+      });
+  });
+});
+
+app.get("/localbook", function (req, res) {
+  const client = new MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    db.collection("match").findOne(
+      { douban_url: req.query.douban_url },
+      function (err, result) {
+        if (err) throw err;
+        if (!result) result = {};
+        res.write(JSON.stringify(result));
+        res.end();
+        client.close();
+      }
+    );
+  });
+});

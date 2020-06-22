@@ -12,6 +12,19 @@ $.get("http://localhost:3001/book", { id: book_id }, function (data) {
   $("#translator").text(book.translator);
   $("#original-title").text(book["original-title"]);
   $("#douban_url").text(book["douban_url"]).attr("href", book["douban_url"]);
+
+  $.get(
+    "http://localhost:3001/localbook",
+    { douban_url: book["douban_url"] },
+    function (d) {
+      lbd = JSON.parse(d);
+      if ("local_path" in lbd) {
+        $("#localpath").text(lbd.local_path);
+        $("#similarity").text(lbd.similarity);
+      }
+    }
+  );
+
   let tagsdiv = $("#tags");
   if (book.tags) {
     book.tags.split(" ").forEach(function (tag) {

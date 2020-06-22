@@ -1,6 +1,7 @@
 booklist = [];
 tagfilter = [];
 filteredbooklist = [];
+localbooks = [];
 
 Array.prototype.remove = function () {
   var what,
@@ -34,7 +35,7 @@ function renderbooktable() {
   booklisttb
     .empty()
     .append(
-      '<caption>Douban Books</caption><tr><th align="left">Title</th><th align="left">Author</th><th align="left">Rating</th><th align="left">Rating People</th><th align="left">My Rating</th></tr>'
+      '<caption>Douban Books</caption><tr><th align="left">Title</th><th align="left">Author</th><th align="left">Rating</th><th align="left">Rating People</th><th align="left">My Rating</th><th align="left">Local Book</th></tr>'
     );
   filteredbooklist = [];
   booklist.forEach(function (book) {
@@ -59,6 +60,17 @@ function renderbooktable() {
       return;
     }
     filteredbooklist.push(book);
+
+    haslocalbook = false;
+    localbooks.forEach(function (lb) {
+      if ("douban_url" in lb) {
+        if (lb.douban_url === book.douban_url) {
+          haslocalbook = true;
+          return;
+        }
+      }
+    });
+
     booklisttb.append(
       "<tr><td>" +
         '<a href="http://localhost:3001/book.html?id=' +
@@ -74,6 +86,8 @@ function renderbooktable() {
         book.ratingpeople +
         "</td><td>" +
         book.my_rating +
+        "</td><td>" +
+        haslocalbook +
         "</td></tr>"
     );
   });
@@ -135,8 +149,22 @@ function rendersummary() {
   });
 }
 
-$("#booklisttb").ready(function () {
-  renderpage("reading");
+$("#localbookssummaryid").ready(function () {
+  $.get("http://localhost:3001/localbooks", {}, function (data) {
+    localbooks = JSON.parse(data);
+    cnt = 0;
+    localbooks.forEach(function (lb) {
+      if ("douban_url" in lb) {
+        cnt++;
+      }
+    });
+    $("#localbookssummaryid").text(
+      "Local Books: " + cnt + " matched / " + localbooks.length + " total"
+    );
+    $("#booklisttb").ready(function () {
+      renderpage("reading");
+    });
+  });
 });
 
 $("input[type=radio][name=doubanbook_readingstatus]").change(function () {

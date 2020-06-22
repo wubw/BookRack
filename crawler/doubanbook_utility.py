@@ -8,7 +8,7 @@ def getsoup(url):
            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
            'Accept-Language': 'en-sg',
            'Cache-Control': 'max-age=0',
-           'Cookie': '__utma=81379588.1243558140.1585669813.1589622269.1589627340.98; __utmb=81379588.202.10.1589627340; __utmc=81379588; __utmz=81379588.1589597487.96.14.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=30149280.1930022656.1585669813.1589622269.1589627340.107; __utmb=30149280.202.10.1589627340; __utmc=30149280; __utmv=30149280.221; __utmz=30149280.1589597484.105.11.utmcsr=accounts.douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/passport/login; push_doumail_num=0; push_noty_num=0; _pk_id.100001.3ac3=b8c3de2bd3e29135.1585669813.100.1589634346.1589623401.; _pk_ses.100001.3ac3=*; __utmt=1; __utmt_douban=1; _vwo_uuid_v2=D0ED8DCAD07DA13A5021BDDFF7B8727D2|d048c79dfdceb39f68ff8c26a904b67c; gr_cs1_f86ad958-b02e-4f21-9546-4b6dc4a33824=user_id%3A1; gr_user_id=1170c572-82fd-4f07-ba30-d60c7e862672; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03=f86ad958-b02e-4f21-9546-4b6dc4a33824; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03_f86ad958-b02e-4f21-9546-4b6dc4a33824=true; ap_v=0,6.0; ct=y; _pk_ref.100001.3ac3=%5B%22%22%2C%22%22%2C1589627340%2C%22https%3A%2F%2Fwww.douban.com%2F%22%5D; __gads=ID=3c8133b4397007b6:T=1589623256:S=ALNI_MbA1g4saW_RXpFr2XteqskxsJz3Rw; dbcl2="2215801:1IapRb8S1vk"; ck=rN1_; douban-profile-remind=1; Hm_lvt_cfafef0aa0076ffb1a7838fd772f844d=1586671023,1586671369,1589078698; ll="108231"; bid=6oZiJHXrnh0',
+           'Cookie': 'push_doumail_num=0; push_noty_num=0; __utma=81379588.856791827.1592028653.1592646472.1592740591.18; __utmb=81379588.3.10.1592740591; __utmc=81379588; __utmz=81379588.1592122669.4.3.utmcsr=movie.douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/mine; __utma=30149280.993107657.1592028653.1592646472.1592740591.24; __utmb=30149280.3.10.1592740591; __utmc=30149280; __utmv=30149280.221; __utmz=30149280.1592122669.5.2.utmcsr=movie.douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/mine; _vwo_uuid_v2=D0ED8DCAD07DA13A5021BDDFF7B8727D2|d048c79dfdceb39f68ff8c26a904b67c; gr_cs1_5cca986b-f6ec-4852-a005-51a8630b1a7a=user_id%3A1; gr_user_id=1170c572-82fd-4f07-ba30-d60c7e862672; _pk_id.100001.3ac3=94348fa5e51d8645.1592028653.18.1592740602.1592647777.; _pk_ses.100001.3ac3=*; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03=5cca986b-f6ec-4852-a005-51a8630b1a7a; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03_5cca986b-f6ec-4852-a005-51a8630b1a7a=true; ap_v=0,6.0; _pk_ref.100001.3ac3=%5B%22%22%2C%22%22%2C1592740594%2C%22https%3A%2F%2Fmovie.douban.com%2Fmine%22%5D; __utmt=1; __utmt_douban=1; __gads=ID=a8457cedc56765a2-2258623c28c20067:T=1592582617:RT=1592582617:S=ALNI_MYQhZJiRZeJtub2Vtng9d_XKJiClQ; ct=y; ck=NC1x; dbcl2="2215801:q7l0wvh7FAk"; ll="108231"; bid=6oZiJHXrnh0',
            'Upgrade-Insecure-Requests': '1',
            'Connection': 'keep-alive'}
     req = urllib.request.Request(url, headers=hdr)
@@ -63,3 +63,20 @@ def getbookcontent(book_url, reading_status):
 
     book_content['douban_url'] = book_url
     return book_content
+
+
+def getimgdata(img_url):
+    hdr = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Safari/605.1.15',
+           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+           'Accept-Language': 'en-sg',
+           'Accept-Encoding': 'gzip, deflate, br',
+           'Connection': 'keep-alive',
+           'Host': 'img9.doubanio.com'}
+
+    try:
+        with urllib.request.urlopen(img_url) as _url:
+            img_data = _url.read()
+        return img_data
+    except Exception as ex:
+        print("Exception:", ex)
+    return None
