@@ -77,16 +77,16 @@ def remove_book(reading_status):
 
         if removed:
             print('book is removed~~~~~: ' + book['douban_url'])
-            #mongo_col.delete_one({"_id": ObjectId(book["_id"])})
+            # mongo_col.delete_one({"_id": ObjectId(book["_id"])})
     # print(doubanbooks)
 
 
-# handlebookspage(
-#    "https://book.douban.com/people/wubinwei/collect?start=", 0, 'have_read')
+handlebookspage(
+    "https://book.douban.com/people/wubinwei/collect?start=", 0, 'have_read')
 # handlebookspage(
 #    "https://book.douban.com/people/wubinwei/do?start=", 0, 'reading')
-handlebookspage(
-    "https://book.douban.com/people/wubinwei/wish?start=", 0, 'will_read')
+# handlebookspage(
+#    "https://book.douban.com/people/wubinwei/wish?start=", 0, 'will_read')
 
 # print(doubanbooks)
 
