@@ -1,0 +1,1 @@
+MAND,UND,SANCT,LOQU,VIR,VAL,CRE/CRET,FUS,Greek and Latin Borrowings
